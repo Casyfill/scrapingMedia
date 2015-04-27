@@ -12,9 +12,8 @@ import lxml.html
 # sapmlequery = 'select%20%0A%20%20%20%20link%0Afrom%20swdata%0AORDER%20BY%20date%20ASC%0ALIMIT%2015000%20%0AOFFSET%2015000%3B'
 
 steak = 15000 #rows in one pass
-# its=2 #passes done already (for offset purpose
-offset = 31154
-
+# its=2 #passes done already (for offset purpose)
+offset = 138995
 q  =  urllib.quote('SELECT link FROM swdata ORDER BY date ASC LIMIT %d OFFSET %d' %(steak,offset))
 l = requests.get('https://premium.scraperwiki.com/rekmggt/x20tbswbppg6yqd/sql/?q='+ q).json()
 # print len(l)
@@ -57,9 +56,11 @@ for x in l:
     if 'http:' in link and 'unian.' in link  : #validating link
         try:
             scrapeLink(link)
-            time.sleep(random.randint(0, 3))
+            # time.sleep(random.randint(0, 3))
         except Exception,e: 
-            print str(e)
+            try: print str(e)
+            except: pass
+        
             print 'someting wrong with the page:'
             print link
         
