@@ -14,7 +14,7 @@ months = {u'апреля':'04',u'мая':'05',u'июня':'06',u'июля':'07',
 
 steak = 10000 #rows in one pass
 
-offset = 2768
+offset = 63520
 q  =  urllib.quote('SELECT link FROM swdata ORDER BY date ASC LIMIT %d OFFSET %d' %(steak,offset))
 l = requests.get('https://premium.scraperwiki.com/3ux35rt/tskxjfilolyryxx/sql/?q='+ q).json()
 # print len(l)
@@ -34,15 +34,12 @@ def scrapeLink(link):
         
         theme = dom.cssselect("body > div.all_page-bg > div > div.article_page > div > div.a_leftcol > div.mistakes-editable > div.a_info > a")[0].text.strip()
         
-                               
         title = dom.cssselect("body > div.all_page-bg > div > div.article_page > div > div.a_leftcol > div.mistakes-editable  h1")[0].text
-        # print title
         date = dom.cssselect('body > div.all_page-bg > div > div.article_page > div > div.a_leftcol > div.mistakes-editable > div.a_info > div > a > span.left')[0].text.strip().split(',')[0].replace('(','').lower()
         
         for k in months.keys():
             if k in date: date = date.replace(k,months[k]).strip().replace(' ','.')
         # print date
-        
         text1 = dom.cssselect('body > div.all_page-bg > div > div.article_page > div > div.a_leftcol > div.mistakes-editable > div.a_about')[0].text_content().replace('\n', ' ').replace('\r', '').strip()
         text2 = dom.cssselect('body > div.all_page-bg > div > div.article_page > div > div.a_leftcol > div.mistakes-editable > div.a_content')[0].text_content().replace('\n', ' ').replace('\r', '').strip()
         text = ' '.join([text1, text2])
