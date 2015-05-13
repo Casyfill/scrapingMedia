@@ -16,7 +16,8 @@ import lxml.html
 
 base = "http://www.1tv.ru/newsarchive/*"
 
-today = datetime.date.today()
+# thisday = datetime.date.today()
+thisday = datetime.date(2013, 9, 23)
 startDate = datetime.date(2013, 04, 01) - datetime.timedelta(days=1) # including first day
 
 strForm = '%d.%m.%Y' # take a look here: https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
@@ -26,7 +27,7 @@ unique_keys = ['link'] #key attributes used to define unique rows (not to update
 def datesArray(endDate,StartDate, strForm):
     # generate a string representation for each date between those two
     numdays = (endDate-StartDate).days
-    return [(today - datetime.timedelta(days=x)).strftime(strForm) for x in range(0, numdays)]
+    return [(endDate - datetime.timedelta(days=x)).strftime(strForm) for x in range(0, numdays)]
 
 
 
@@ -47,7 +48,8 @@ def scrapeDate(date,base,unique_keys):
             
 
 # print datesArray( today, startDate, strForm)
-for date in datesArray( today, startDate, strForm)[offset:]:
+
+for date in datesArray( thisday, startDate, strForm):
     print date
     scrapeDate(date,base,unique_keys)
     

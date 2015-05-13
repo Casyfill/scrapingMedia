@@ -3,7 +3,8 @@
 
 ## This script collects news links from news outlet GAZETA.ru
 ## Helping Andrew Simonov with his dissertation
-# scraped all after 19.02.2015
+## scraped all after 19.02.2015
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,6 +12,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import csv
 
 screenShotPath = "/Users/casy/Dropbox/My_Projects/ANDREW_media/scrapingMedia/regnum/screen.png"
+filepath = "/Users/casy/Dropbox/My_Projects/ANDREW_media/scrapingMedia/gazeta/links_try2.csv"
+
+
 
 #### SCRIPT START
 print
@@ -18,8 +22,9 @@ print 'started'
 driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",service_args=['--ssl-protocol=any'])
 driver.set_window_size(1120, 550) # this is just work around the bug in selenium
 driver.get("http://www.gazeta.ru/news/")
+driver.implicitly_wait(2)
 
-filepath = "/Users/casy/Dropbox/My_Projects/ANDREW_media/scrapingMedia/gazeta/links_try2.csv"
+
 headersList=['date','theme','link']
 
 # save_to_file
@@ -28,19 +33,16 @@ wD = csv.DictWriter(writeFile, headersList,restval='', extrasaction='raise', dia
 wD.writeheader()
 
 	
-
 harvest = 0 # input fasceting variable
 
 while True:
 	# click'n'save until the Date
-	chunks = len(driver.find_elements_by_css_selector('div[id~=other_place]>article'))
 	driver.find_element_by_link_text("Показать еще новости").click()
 	
-	WebDriverWait(driver, 4).until(len(driver.find_elements_by_css_selector('div[id~=other_place] > article'))>chunks)
 	articles = driver.find_elements_by_css_selector('article.b-article')
 	
 	# subsetting input
-	newHarvest = articles[harvest:len(articles)] #subset result to new ones only
+	newHarvest = articles[harvest:] #subset result to new ones only
 	harvest = len(articles) #update harvest num
 
 
